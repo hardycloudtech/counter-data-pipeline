@@ -1,0 +1,336 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      },
+      {
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "beij3b8xf0f7ke"
+        },
+        "enable": false,
+        "hide": false,
+        "iconColor": "red",
+        "name": "value",
+        "target": {
+          "editorMode": "builder",
+          "format": "table",
+          "limit": 100,
+          "matchAny": false,
+          "rawSql": "SELECT COUNT(value) FROM counters LIMIT 50 ",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "name": "COUNT",
+                "parameters": [
+                  {
+                    "name": "value",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "counters",
+          "tags": [],
+          "type": "dashboard"
+        }
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 15,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "beij3b8xf0f7ke"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "value DOOCC01 | SERVER@DOOCC01 |  | 1_19089-CXC_1730371_DOOCC01 | transactions.success"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Name",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.0",
+      "targets": [
+        {
+          "format": "time_series",
+          "rawSql": "SELECT\n  timestamp AS \"time\",\n  CONCAT(node, ' | ', server, ' | ', protocol, ' | ', command_id, ' | ', metric) AS series,\n  CASE WHEN '$valuetype' = 'delta' THEN delta ELSE value END AS value\nFROM counters\nWHERE\n  $__timeFilter(timestamp) AND\n  node IN ($node) AND\n  server IN ($server) AND\n  protocol IN ($protocol) AND\n  command_id IN ($command_id) AND\n  metric IN ($metric)\nORDER BY timestamp",
+          "refId": "A"
+        }
+      ],
+      "title": "Counter Trends",
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": [
+            "DOOCC01"
+          ],
+          "value": [
+            "DOOCC01"
+          ]
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "beij3b8xf0f7ke"
+        },
+        "includeAll": true,
+        "label": "Node",
+        "multi": true,
+        "name": "node",
+        "options": [],
+        "query": "SELECT DISTINCT node FROM counters ORDER BY node",
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": [
+            "SERVER@DOOCC01"
+          ],
+          "value": [
+            "SERVER@DOOCC01"
+          ]
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "beij3b8xf0f7ke"
+        },
+        "includeAll": true,
+        "label": "Server",
+        "multi": true,
+        "name": "server",
+        "options": [],
+        "query": "SELECT DISTINCT server FROM counters ORDER BY server",
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": [
+            ""
+          ],
+          "value": [
+            ""
+          ]
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "beij3b8xf0f7ke"
+        },
+        "includeAll": true,
+        "label": "Protocol",
+        "multi": true,
+        "name": "protocol",
+        "options": [],
+        "query": "SELECT DISTINCT protocol FROM counters ORDER BY protocol",
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": [
+            "1_19089-CXC_1730371_DOOCC01"
+          ],
+          "value": [
+            "1_19089-CXC_1730371_DOOCC01"
+          ]
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "beij3b8xf0f7ke"
+        },
+        "includeAll": true,
+        "label": "Command ID",
+        "multi": true,
+        "name": "command_id",
+        "options": [],
+        "query": "SELECT DISTINCT command_id FROM counters ORDER BY command_id",
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "beij3b8xf0f7ke"
+        },
+        "includeAll": true,
+        "label": "Metric",
+        "multi": true,
+        "name": "metric",
+        "options": [],
+        "query": "SELECT DISTINCT metric FROM counters ORDER BY metric",
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "delta",
+          "value": "delta"
+        },
+        "label": "Value Type",
+        "name": "valuetype",
+        "options": [
+          {
+            "selected": false,
+            "text": "value",
+            "value": "value"
+          },
+          {
+            "selected": true,
+            "text": "delta",
+            "value": "delta"
+          }
+        ],
+        "query": "value,delta",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "2024-07-20T18:30:00.000Z",
+    "to": "2024-08-07T18:29:59.000Z"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Dynamic Counter Dashboard",
+  "uid": "dynamic-dashboard",
+  "version": 12
+}
